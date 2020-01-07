@@ -1,0 +1,4 @@
+#Tue Jan 07 11:39:07 ICT 2020
+base.0=C\:\\Users\\FANDO\\Documents\\SansanyakoUpdate6\\app\\build\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
