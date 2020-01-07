@@ -2,6 +2,7 @@ package com.sansanyako.musicapp2;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
@@ -43,6 +45,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import static com.sansanyako.musicapp2.MainActivity.DOWNLOAD_DIRECTORY;
 
 public class MusicPlayActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
@@ -104,6 +108,7 @@ public class MusicPlayActivity extends AppCompatActivity implements SeekBar.OnSe
         repeat = findViewById(R.id.repeat);
         share = findViewById(R.id.share);
         download = findViewById(R.id.download);
+
         playerProgress = findViewById(R.id.player_Progress);
 
         Bundle extras = getIntent().getExtras();
@@ -270,22 +275,39 @@ public class MusicPlayActivity extends AppCompatActivity implements SeekBar.OnSe
                         mediaPlayer.pause();
                         playerstate.setBackgroundResource(R.drawable.play);
                     }
-                    mProgressDialog = new ProgressDialog(MusicPlayActivity.this);
-                    mProgressDialog.setMessage("Prepare for saving, please wait!");
-                    mProgressDialog.setIndeterminate(true);
-                    mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                    mProgressDialog.setCancelable(true);
 
-                    // execute this when the downloader must be fired
-                    final DownloadTask downloadTask = new DownloadTask(MusicPlayActivity.this);
-                    downloadTask.execute(trackUrl + "&key=" + SplashActivity.sc);
+                    String cutTitle =trackTitle;
+                    cutTitle = cutTitle.replace(" ", "-").replace(".", "-") + ".mp3";
+                    DownloadManager downloadManager = (DownloadManager) getApplication().getSystemService(Context.DOWNLOAD_SERVICE);
+                    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(trackUrl + "&key=" + SplashActivity.sc));
+                    request.setTitle(trackTitle);
+                    request.setDescription("Downloading");
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                    request.setDestinationInExternalPublicDir(DOWNLOAD_DIRECTORY, cutTitle);
+                    request.allowScanningByMediaScanner();
+                    long downloadID = downloadManager.enqueue(request);
 
-                    mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            downloadTask.cancel(true);
-                        }
-                    });
+                    Toast.makeText(getApplicationContext(), "Downloading Start", Toast.LENGTH_SHORT).show();
+
+
+
+
+//                    mProgressDialog = new ProgressDialog(MusicPlayActivity.this);
+//                    mProgressDialog.setMessage("Prepare for saving, please wait!");
+//                    mProgressDialog.setIndeterminate(true);
+//                    mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//                    mProgressDialog.setCancelable(true);
+//
+//                    // execute this when the downloader must be fired
+//                    final DownloadTask downloadTask = new DownloadTask(MusicPlayActivity.this);
+//                    downloadTask.execute(trackUrl + "&key=" + SplashActivity.sc);
+//
+//                    mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+//                        @Override
+//                        public void onCancel(DialogInterface dialog) {
+//                            downloadTask.cancel(true);
+//                        }
+//                    });
                 }
             });
         } else {

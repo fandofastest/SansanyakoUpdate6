@@ -33,6 +33,8 @@ public class TrackAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     Context context;
     List<Object> listOnline;
     ArrayList<Integer> count = new ArrayList<Integer>();
+    final TrackAdapter.ViewHolder[] viewHolderArray = {null};
+
 
     public TrackAdapter(Context context, List<Object> listOnline) {
         this.context = context;
@@ -108,14 +110,30 @@ public class TrackAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             @Override
             public void onClick(View v) {
 
-                if (count.get(position) % 2 == 0) {
+                tutup(viewHolderArray[0],position);;
+
+                if (viewHolderOnline.action.getVisibility()==View.GONE){
                     viewHolderOnline.action.setVisibility(View.VISIBLE);
-                } else {
+
+                }
+                else {
                     viewHolderOnline.action.setVisibility(View.GONE);
                 }
 
-                count.set(position, count.get(position) + 1);
-                Log.d("The Index is ", count.toString());
+
+
+
+//                if (viewHolderOnline.action.isShown()){
+//                        viewHolderOnline.action.setVisibility(View.GONE);
+//
+//                    } else {
+//                        viewHolderOnline.action.setVisibility(View.VISIBLE);
+//                    }
+
+                viewHolderArray[0] =viewHolderOnline;
+
+
+
             }
         });
 
@@ -149,6 +167,19 @@ public class TrackAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         });
 
     }
+
+    private void tutup(TrackAdapter.ViewHolder holder, int pos){
+
+        if (holder!=null){
+            holder.action.setVisibility(View.GONE);
+
+
+        }
+
+
+
+    }
+
 
     @Override
     public int getItemCount() {

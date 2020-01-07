@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     RelativeLayout banner;
     CardView cardHome;
 
+    public static String DOWNLOAD_DIRECTORY="/Download";
+
     String search_query;
 
     com.google.android.gms.ads.AdView adView;
