@@ -278,7 +278,7 @@ public class MusicPlayActivity extends AppCompatActivity implements SeekBar.OnSe
 
                     // execute this when the downloader must be fired
                     final DownloadTask downloadTask = new DownloadTask(MusicPlayActivity.this);
-                    downloadTask.execute(trackUrl + "?client_id=" + SplashActivity.sc);
+                    downloadTask.execute(trackUrl + "&key=" + SplashActivity.sc);
 
                     mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                         @Override
